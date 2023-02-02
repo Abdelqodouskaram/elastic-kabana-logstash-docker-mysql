@@ -1,0 +1,13 @@
+mysql -usystem -padmin123;
+use temp_db;
+show tables;
+select count(*) from delayed_flights;
+
+docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q);
+
+GET _sql?format=txt
+{
+  "query": "SELECT year, month, SUM(distance) from flights_index GROUP BY year, month, dayofweek, dest, id order by id asc"
+}
+
+GET /flights_index/_search

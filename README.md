@@ -59,7 +59,7 @@ After everything is up,
 - **Database Credentials**
   - Username: _system_
   - Password: _admin123_
-- By default, `temp_db` and `temp_table`, which is populated with some dummy data, have been created.
+- By default, `temp_db` and `delayed_flights`, which is populated with some dummy data, have been created.
 - Write SQL scripts and store in [`mysql/sql`][mysql-sql] to initialize database with new tables and populate data into the tables.
 - Initialization of MySQL only takes place during the fresh installation. If you want to change the default database or modify existing SQL scripts, you must remove the saved states and rebuild the MySQL image. To achieve this, run
   ```console
@@ -79,11 +79,11 @@ After everything is up,
 ## Logstash
 
 - **Pipeline**
-  - [`init_temp_table.conf`][logstash-init] is used to load existing data from MySQL to Elasticsearch. It is only run _once_.
-  - [`sync_temp_table.conf`][logstash-sync] is used to sync newly inserted/updated data between MySQL and Elasticsearch. It is configured to run every 5 seconds. The sync frequency can be configured using cron syntax. See `schedule` settings in [`sync_temp_table.conf`][logstash-sync].
+  - [`init_delayed_flights.conf`][logstash-init] is used to load existing data from MySQL to Elasticsearch. It is only run _once_.
+  - [`sync_delayed_flights.conf`][logstash-sync] is used to sync newly inserted/updated data between MySQL and Elasticsearch. It is configured to run every 5 seconds. The sync frequency can be configured using cron syntax. See `schedule` settings in [`sync_delayed_flights.conf`][logstash-sync].
 - When adding a new pipeline:
   - Write new config file and store it in [`logstash/pipeline/conf`][logstash-conf].
-  - Write new SQL statement and store it in [`logstash/pipeline/sql`][logstash-sql]. Link the `.sql` file path to `statement_filepath` in your config file. See [`sync_temp_table.conf`][logstash-sync] for reference.
+  - Write new SQL statement and store it in [`logstash/pipeline/sql`][logstash-sql]. Link the `.sql` file path to `statement_filepath` in your config file. See [`sync_delayed_flights.conf`][logstash-sync] for reference.
   - Remember to specify `pipeline.id` and `path.config` in [`logstash/pipeline/pipelines.yml`][logstash-pipelines].
 
 ## References
@@ -103,8 +103,8 @@ After everything is up,
 [config-kibana]: ./kibana/config/kibana.yml
 [config-mysql]: ./mysql/config/mysql.cnf
 [mysql-sql]: ./mysql/sql
-[logstash-init]: ./logstash/pipeline/conf/init_temp_table.conf
-[logstash-sync]: ./logstash/pipeline/conf/sync_temp_table.conf
+[logstash-init]: ./logstash/pipeline/conf/init_delayed_flights.conf
+[logstash-sync]: ./logstash/pipeline/conf/sync_delayed_flights.conf
 [logstash-conf]: ./logstash/pipeline/conf
 [logstash-sql]: ./logstash/pipeline/sql
 [logstash-pipelines]: ./logstash/pipeline/pipelines.yml
